@@ -26,14 +26,14 @@ O arquivo  `.env.example`  contém todas as variáveis de ambientes utilizadas q
 mv .env.example .env
 ```
 
-**2. Executar o *docker compose***
+**2. Executar o *docker compose**
 
 ```shell
 # executar todo os container em segundo plano (-d)
 docker compose up -d
 ```
 
-**3. Acessando a aplicação **
+**3. Acessando a aplicação**
 
 - http://localhost:8889/lab - *JupyterLab* contendo análise e experimento
 
@@ -54,6 +54,6 @@ docker compose up -d
 
   - > Obs: Após executar o terceiro *notebook* , é necessário atualizar a página para verificar os experimentos salvos no painel
 
-  <img src="/home/kiki/Desktop/fiec-cientista-de-dados/imgs/Dockerfile-MLFlow" alt="image-20221127141346525" style="zoom:80%;" />
+  <img src="./imgs/Dockerfile-MLFlow" alt="image-20221127141346525" style="zoom:80%;" />
   
   
