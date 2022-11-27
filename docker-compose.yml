@@ -1,0 +1,71 @@
+version: "3.9"
+services:
+  app-fiec:
+    build: .
+    container_name: app-fiec
+    ports:
+      - "8889:8888"
+    environment:
+      MLFLOW_S3_ENDPOINT_URL: http://minio-server:9000
+      AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+      AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+    volumes:
+      - ./data:/content/data
+
+  postgres:
+    image: postgres:15.1
+    container_name: mlflow_db
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DB: $POSTGRES_DB
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  minio-server:
+    image: minio/minio
+    container_name: mlflow_s3
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: $AWS_ACCESS_KEY_ID
+      MINIO_ROOT_PASSWORD: $AWS_SECRET_ACCESS_KEY
+    volumes:
+      - minio_data:/data
+
+  mc:
+    image: minio/mc
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc config host add myminio http://minio-server:9000 ${AWS_ACCESS_KEY_ID} ${AWS_SECRET_ACCESS_KEY};
+      /usr/bin/mc rm -r --force myminio/mlflow-artifact-store;
+      /usr/bin/mc mb myminio/mlflow-artifact-store;
+      exit 0;
+      "
+    depends_on:
+      - minio-server
+
+  mlflow-server:
+    build:
+      context: .
+      dockerfile: Dockerfile-MLFlow
+    container_name: mlflow_server
+    ports:
+      - "5000:5000"
+    environment:
+      BACKEND_URI: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      ARTIFACT_ROOT: s3://mlflow-artifact-store
+      MLFLOW_S3_ENDPOINT_URL: http://minio-server:9000
+      AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+      AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+    depends_on:
+      - mc
+
+volumes:
+  pgdata:
+  minio_data:

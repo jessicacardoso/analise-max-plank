@@ -1,0 +1,7 @@
+u8darts==0.22.0
+xgboost==1.7.1
+holoviews==1.15.2
+plotly==5.11.0
+mlflow==2.0.1
+seaborn==0.12
+boto3==1.26.16
