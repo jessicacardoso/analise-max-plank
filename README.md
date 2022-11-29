@@ -26,7 +26,7 @@ O arquivo  `.env.example`  contém todas as variáveis de ambientes utilizadas q
 mv .env.example .env
 ```
 
-**2. Executar o *docker compose**
+**2. Executar o *docker compose***
 
 ```shell
 # executar todo os container em segundo plano (-d)
