@@ -1,9 +1,7 @@
-# Análise séries temporais Instituto Max Planck de Biogeoquímica
+# Análise séries temporais de clima Instituto Max Planck de Biogeoquímica
 
 Este desafio usa um conjunto de dados de séries temporais de clima registrado pelo Instituto Max
 Planck de Biogeoquímica. Este conjunto de dados contém 14 *features* diferentes, como temperatura do ar, pressão atmosférica e umidade. Estes dados foram coletados a cada 10 minutos, a partir de 2003. Os [dados utilizados](https://storage.googleapis.com/tensorflow/tf-keras-datasets/jena_climate_2009_2016.csv.zip) são referentes ao período de 2009 até 2016.
-
-
 
 ##  :zap: **Tecnologias**
 
